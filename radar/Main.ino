@@ -29,11 +29,11 @@ volatile bool  lastOk   = false;
 // Page web: radar canvas + polling /data
 const char INDEX_HTML[] PROGMEM = R"HTML(
 <!doctype html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Radar ESP8266</title>
+<title>ESP8266 Radar</title>
 <style>
   body{margin:0;background:#0b1321;color:#d8f3ff;font-family:system-ui,Segoe UI,Roboto,Arial}
   header{padding:10px 16px;background:#0f1b34;border-bottom:1px solid #1e2a4a}
@@ -48,31 +48,32 @@ const char INDEX_HTML[] PROGMEM = R"HTML(
 </head>
 <body>
 <header>
-  <strong>Radar ESP8266</strong>
-  <span id="status" class="pill">connexion…</span>
+  <strong>ESP8266 Radar</strong>
+  <span id="status" class="pill">connecting…</span>
 </header>
 <div class="wrap">
   <canvas id="cv" width="600" height="600"></canvas>
   <div class="panel">
-    <div class="row">Portée max (cm): <span id="rval">200</span>
+    <div class="row">Max range (cm): <span id="rval">200</span>
       <input id="rmax" type="range" min="50" max="500" value="200">
     </div>
     <div class="row">Polling (ms): <span id="ival">50</span>
       <input id="ivalin" type="range" min="20" max="200" value="50">
     </div>
-    <div class="row">Points gardés: <span id="pval">1200</span>
+    <div class="row">Points kept: <span id="pval">1200</span>
       <input id="pmax" type="range" min="200" max="2400" value="1200">
     </div>
-    <div class="row">Dernière mesure: <code id="last">—</code></div>
-    <div class="row">Astuces:
+    <div class="row">Last measurement: <code id="last">—</code></div>
+    <div class="row">Tips:
       <ul>
-        <li>0° en haut, balayage horaire.</li>
-        <li>La couleur s’estompe avec l’âge.</li>
+        <li>0° at the top, clockwise sweep.</li>
+        <li>Color fades with age.</li>
       </ul>
     </div>
   </div>
 </div>
 <script>
+// JavaScript stays the same; only status text messages in fetchData() are translated
 const cv = document.getElementById('cv');
 const ctx = cv.getContext('2d');
 let RMAX_CM = 200;
@@ -166,7 +167,7 @@ async function fetchData(){
       draw(j.a);
     }
   }catch(e){
-    statusEl.textContent = 'déconnecté';
+    statusEl.textContent = 'disconnected';
   }
 }
 
